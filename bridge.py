@@ -48,7 +48,7 @@ def run(c):
     log(f"EXEC id={cid} timeout={to} cmd={cmd!r}")
     t0 = time.time()
     try:
-        p = subprocess.run(["/bin/bash", "-c", cmd], capture_output=True, timeout=to, cwd="/root")
+        p = subprocess.run(["/bin/bash", "-c", cmd], capture_output=True, timeout=to, cwd="/root", env=dict(os.environ, HOME="/root"))
         code, out = p.returncode, p.stdout + (b"\n--stderr--\n" + p.stderr if p.stderr else b"")
     except subprocess.TimeoutExpired as e:
         code, out = 124, (e.stdout or b"") + b"\n[timed out]"
